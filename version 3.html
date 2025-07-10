@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>NKC Email Signature Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        input {
+            width: 100%;
+            padding: 6px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+        }
+
+        #copyStatus {
+            margin-left: 10px;
+            color: green;
+            font-weight: bold;
+        }
+
+        .copy-icon {
+            cursor: pointer;
+            margin-left: 10px;
+            color: #1a73e8;
+            font-size: 14px;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>🖊️ Tạo chữ ký email cho NKCentral</h2>
+
+    <label>Họ và tên</label>
+    <input id="name" type="text" placeholder="Nguyễn Văn A">
+
+    <label>Chức danh</label>
+    <input id="title" type="text" placeholder="App Operation Specialist - NKCentral Group">
+
+    <label>Số điện thoại</label>
+    <input id="phone" type="text" placeholder="0938 467 466">
+
+    <label>Email công ty</label>
+    <input id="email" type="text" placeholder="ten@nkcmc.com.vn">
+
+    <button onclick="generate()">Tạo chữ ký</button>
+
+    <div id="resultSection" style="display:none;">
+        <h3>
+            ✅ Kết quả (bấm <span class="copy-icon" onclick="copySignature()">Sao chép</span> để copy):
+            <span id="copyStatus"></span>
+        </h3>
+        <div id="result" contenteditable="true"></div>
+    </div>
+
+    <script>
+        function generate() {
+            const name = document.getElementById('name').value;
+            const title = document.getElementById('title').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+
+            const html = `
+<table cellpadding="0" cellspacing="0" border="0"
+    style="width:100%; max-width:600px; font-family:Arial, sans-serif; font-size:14px; color:#333; border-collapse:collapse;">
+  <tr>
+    <td align="center" valign="middle" style="padding-right:15px; width:100px;">
+      <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/Logo_NK.png"
+          alt="NKC Logo" style="max-width:100px; height:auto; display:block;">
+    </td>
+    <td valign="middle" style="border-left:2px solid #F3C623; padding-left:15px;">
+      <div style="font-size:16px; font-weight:bold; color:#333;">${name}</div>
+      <div style="font-size:14px; color:#555; margin-bottom:10px;">${title}</div>
+      <div style="margin-bottom:6px;">📱 <a href="tel:${phone}" style="color:#1a73e8; text-decoration:none;">${phone}</a></div>
+      <div style="margin-bottom:6px;">✉️ <a href="mailto:${email}" style="color:#1a73e8; text-decoration:none;">${email}</a></div>
+      <div style="margin-bottom:6px;">🌐 <a href="https://nkmc.com.vn" target="_blank" style="color:#1a73e8; text-decoration:none;">https://nkmc.com.vn</a></div>
+      <div>📍 <a href="https://maps.google.com/?q=No. 22, D7 Street, Saigon Pearl Villa Area, Ward 22, Binh Thanh District, HCMC" target="_blank" style="color:#1a73e8; text-decoration:none;">
+        No. 22, D7 Street, Saigon Pearl Villa Area, Ward 22, Binh Thanh District, Ho Chi Minh City
+      </a></div>
+    </td>
+  </tr>
+</table>`;
+
+            document.getElementById('result').innerHTML = html;
+            document.getElementById('resultSection').style.display = 'block';
+            document.getElementById('copyStatus').innerText = '';
+        }
+
+        function copySignature() {
+            const resultDiv = document.getElementById("result");
+
+            // Tạo range để chọn HTML đã render
+            const range = document.createRange();
+            range.selectNodeContents(resultDiv);
+
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+
+            try {
+                const successful = document.execCommand("copy");
+                if (successful) {
+                    document.getElementById("copyStatus").innerText = "Đã sao chép!";
+                } else {
+                    document.getElementById("copyStatus").innerText = "Không thể sao chép.";
+                }
+            } catch (err) {
+                document.getElementById("copyStatus").innerText = "Lỗi sao chép.";
+            }
+
+            selection.removeAllRanges();
+        }
+
+
+    </script>
+
+</body>
+
+</html>
