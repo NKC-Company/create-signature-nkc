@@ -64,6 +64,16 @@
                 font-size: 13px;
             }
         }
+
+        .copy-icon {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -97,14 +107,17 @@
 
         <button onclick="generate()">Tạo chữ ký</button>
 
-        <div id="resultSection" style="display:none;">
-            <h3>
-                Chữ ký đã được tạo thành công <button class="copy-icon" style="width: 15%;"
-                    onclick="copySignature()">Sao chép</button>
-                <span id="copyStatus"></span>
-            </h3>
-            <div id="result" contenteditable="true"></div>
+        <div id="resultSection" style="display:none; margin-top: 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <h3 style="margin: 0 0 10px 0;">Chữ ký đã được tạo thành công</h3>
+                <div>
+                    <button class="copy-icon" onclick="copySignature()">Sao chép</button>
+                    <span id="copyStatus" style="margin-left: 8px; font-weight: bold; color: green;"></span>
+                </div>
+            </div>
+            <div id="result" contenteditable="true" style="margin-top: 12px;"></div>
         </div>
+
 
         <script src="staffList.js"></script>
 
@@ -192,8 +205,8 @@
         <div>
             <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/location.png"
                  alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
-            <a href="https://maps.google.com/?q=Số 22, đường Đ7, Khu biệt thự Sài gòn Pearl, Phường Thạnh Mỹ Tây, Thành phố Hồ Chí Minh, Việt nam" target="_blank" style="color:#1a73e8; text-decoration:none;">
-                Số 22, đường Đ7, Khu biệt thự Sài gòn Pearl, Phường Thạnh Mỹ Tây, Thành phố Hồ Chí Minh, Việt nam.
+            <a href="https://maps.google.com/?q=No. 22, D7 Street, Saigon Pearl Villa Area, Thanh My Tay Ward, Binh Thanh District, Ho Chi Minh City" target="_blank" style="color:#1a73e8; text-decoration:none;">
+                No. 22, D7 Street, Saigon Pearl Villa Area, Thanh My Tay Ward, Binh Thanh District, Ho Chi Minh City
             </a>
         </div>
 
