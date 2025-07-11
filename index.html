@@ -2,6 +2,7 @@
 <html lang="vi">
 
 <head>
+    <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
     <meta charset="UTF-8">
     <title>NKC Email Signature Generator</title>
     <style>
@@ -67,6 +68,9 @@
     <label>Email công ty</label>
     <input id="email" type="text" placeholder="ten@nkcmc.com.vn">
 
+    <label>Website</label>
+    <input id="website" type="text" placeholder="https://nkmc.com.vn">
+
     <button onclick="generate()">Tạo chữ ký</button>
 
     <div id="resultSection" style="display:none;">
@@ -83,6 +87,8 @@
             const title = document.getElementById('title').value;
             const phone = document.getElementById('phone').value;
             const email = document.getElementById('email').value;
+            const website = document.getElementById('website').value;
+
 
             const html = `
 <table cellpadding="0" cellspacing="0" border="0"
@@ -93,14 +99,34 @@
           alt="NKC Logo" style="max-width:100px; height:auto; display:block;">
     </td>
     <td valign="middle" style="border-left:1px solid #fade70; padding-left:15px;">
-      <div style="font-size:16px; font-weight:bold; color:#333;">${name}</div>
-      <div style="font-size:14px; color:#555; margin-bottom:10px;">${title}</div>
-      <div style="margin-bottom:6px;">📱 <a href="tel:${phone}" style="color:#1a73e8; text-decoration:none;">${phone}</a></div>
-      <div style="margin-bottom:6px;">✉️ <a href="mailto:${email}" style="color:#1a73e8; text-decoration:none;">${email}</a></div>
-      <div style="margin-bottom:6px;">🌐 <a href="https://nkmc.com.vn" target="_blank" style="color:#1a73e8; text-decoration:none;">https://nkmc.com.vn</a></div>
-      <div>📍 <a href="https://maps.google.com/?q=No. 22, D7 Street, Saigon Pearl Villa Area, Ward 22, Binh Thanh District, HCMC" target="_blank" style="color:#1a73e8; text-decoration:none;">
-        No. 22, D7 Street, Saigon Pearl Villa Area, Ward 22, Binh Thanh District, Ho Chi Minh City
-      </a></div>
+        <div style="font-size:17px; font-weight:bold; color:#646464;">${name}</div>
+        <div style="font-size:14px; color:#646464; margin-bottom:10px; margin-top:6px; font-weight:bold">${title}</div>
+
+        <div style="margin-bottom:6px;">
+            <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/phone.png"
+                 alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
+            <a href="tel:${phone}" style="color:#1a73e8; text-decoration:none;">${phone}</a>
+        </div>
+
+        <div style="margin-bottom:6px;">
+            <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/email.png"
+                 alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
+            <a href="mailto:${email}" style="color:#1a73e8; text-decoration:none;">${email}</a>
+        </div>
+
+        <div style="margin-bottom:6px;">
+            <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/web-icon.png"
+                 alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
+            <a href="${website}" target="_blank" style="color:#1a73e8; text-decoration:none;">${website}</a>
+        </div>
+
+        <div>
+            <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/location.png"
+                 alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
+            <a href="https://maps.google.com/?q=No. 22, D7 Street, Saigon Pearl Villa Area, Ward 22, Binh Thanh District, HCMC" target="_blank" style="color:#1a73e8; text-decoration:none;">
+            No. 22, D7 Street, Saigon Pearl Villa Area, Ward 22, Binh Thanh District, Ho Chi Minh City
+            </a>
+        </div>
     </td>
   </tr>
 </table>`;
