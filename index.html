@@ -125,10 +125,13 @@
             <a href="mailto:${email}" style="color:#1a73e8; text-decoration:none;">${email}</a>
         </div>
 
-        <div style="margin-bottom:6px;">
-            <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/web-icon.png"
-                 alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
-            ${websiteHTML}
+
+        <div style="margin-bottom:6px; display: flex; align-items: center; flex-wrap: wrap;">
+            <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/main/web-icon.png"
+                alt="Website" style="height:14px; vertical-align:middle; margin-right:6px; flex-shrink:0;">
+            <div style="display:inline; word-break: break-all;">
+                ${websiteHTML}
+            </div>
         </div>
 
         <div>
@@ -138,6 +141,7 @@
             No. 22, D7 Street, Saigon Pearl Villa Area, Ward 22, Binh Thanh District, Ho Chi Minh City
             </a>
         </div>
+
     </td>
   </tr>
 </table>`;
