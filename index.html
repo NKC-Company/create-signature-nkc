@@ -44,16 +44,16 @@
         .copy-icon {
             cursor: pointer;
             margin-left: 10px;
-            color: #1a73e8;
             font-size: 14px;
-            text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
 
-    <h2>🖊️ Tạo chữ ký email cho NKCentral</h2>
+    <div style="text-align: center;">
+        <h2>Tạo chữ ký email cho NKCentral</h2>
+    </div>
 
     <label>Họ và tên</label>
     <input id="name" type="text" placeholder="Nguyễn Văn A">
@@ -71,7 +71,7 @@
 
     <div id="resultSection" style="display:none;">
         <h3>
-            ✅ Kết quả (bấm <span class="copy-icon" onclick="copySignature()">Sao chép</span> để copy):
+            Chữ ký đã được tạo thành công <button class="copy-icon" onclick="copySignature()">Sao chép</button>
             <span id="copyStatus"></span>
         </h3>
         <div id="result" contenteditable="true"></div>
@@ -92,7 +92,7 @@
       <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/Logo_NK.png"
           alt="NKC Logo" style="max-width:100px; height:auto; display:block;">
     </td>
-    <td valign="middle" style="border-left:2px solid #F3C623; padding-left:15px;">
+    <td valign="middle" style="border-left:1px solid #fade70; padding-left:15px;">
       <div style="font-size:16px; font-weight:bold; color:#333;">${name}</div>
       <div style="font-size:14px; color:#555; margin-bottom:10px;">${title}</div>
       <div style="margin-bottom:6px;">📱 <a href="tel:${phone}" style="color:#1a73e8; text-decoration:none;">${phone}</a></div>
