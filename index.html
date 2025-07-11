@@ -6,151 +6,157 @@
     <meta charset="UTF-8">
     <title>NKC Email Signature Generator</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 30px;
-            max-width: 700px;
-            margin: auto;
-        }
-
-        input {
-            width: 100%;
-            padding: 6px;
-            margin-bottom: 12px;
-            font-size: 14px;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 6px;
-            margin-bottom: 12px;
-            font-size: 14px;
+        * {
             box-sizing: border-box;
         }
 
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            padding: 0 10px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 14px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
 
         button {
             background-color: #1a73e8;
             color: white;
             border: none;
-            padding: 10px 16px;
-            font-size: 14px;
-            border-radius: 4px;
-            cursor: pointer;
+            font-weight: bold;
         }
 
         #result {
             margin-top: 20px;
             padding: 15px;
             border: 1px solid #ccc;
+            overflow-x: auto;
+            background-color: #fdfdfd;
         }
 
-        #copyStatus {
-            margin-left: 10px;
-            color: green;
-            font-weight: bold;
-        }
+        @media (max-width: 480px) {
 
-        .copy-icon {
-            cursor: pointer;
-            margin-left: 10px;
-            font-size: 14px;
+            input,
+            select,
+            button {
+                font-size: 14px;
+            }
+
+            #result {
+                font-size: 13px;
+            }
         }
     </style>
 </head>
 
 <body>
+    <div class="container">
+        <div style="text-align: center;">
+            <h2>Tạo chữ ký email cho NKCentral</h2>
+        </div>
 
-    <div style="text-align: center;">
-        <h2>Tạo chữ ký email cho NKCentral</h2>
-    </div>
+        <label>Chọn nhân sự</label>
+        <select id="staffSelect" onchange="autofill()"
+            style="width:100%; padding:6px; margin-bottom:12px; font-size:14px;">
+            <option value="">-- Chọn nhân sự --</option>
+        </select>
 
-    <!-- <label>Họ và tên</label>
-    <input id="name" type="text" placeholder="Nguyễn Văn A"> -->
-
-    <label>Chọn nhân sự</label>
-    <select id="staffSelect" onchange="autofill()" style="width:100%; padding:6px; margin-bottom:12px; font-size:14px;">
-        <option value="">-- Chọn nhân sự --</option>
-    </select>
-
-    <!-- Vẫn cần giữ lại để autofill hoạt động -->
-    <input id="name" type="text" placeholder="Nguyễn Văn A" style="display: none;">
+        <!-- Vẫn cần giữ lại để autofill hoạt động -->
+        <input id="name" type="text" placeholder="Nguyễn Văn A" style="display: none;">
 
 
-    <label>Chức danh</label>
-    <input id="title" type="text" placeholder="ví dụ: NKCentral Group">
+        <label>Chức danh</label>
+        <input id="title" type="text" placeholder="ví dụ: NKCentral Group">
 
-    <label>Số điện thoại</label>
-    <input id="phone" type="text" placeholder="0334 123 456">
+        <label>Số điện thoại</label>
+        <input id="phone" type="text" placeholder="0334 123 456">
 
-    <label>Email công ty</label>
-    <input id="email" type="text" placeholder="ten@nkcmc.com.vn">
+        <label>Email công ty</label>
+        <input id="email" type="text" placeholder="ten@nkcmc.com.vn">
 
-    <label>Website</label>
-    <input id="website" type="text" placeholder="https://nkmc.com.vn">
+        <label>Website</label>
+        <input id="website" type="text" placeholder="https://nkmc.com.vn">
 
-    <button onclick="generate()">Tạo chữ ký</button>
+        <button onclick="generate()">Tạo chữ ký</button>
 
-    <div id="resultSection" style="display:none;">
-        <h3>
-            Chữ ký đã được tạo thành công <button class="copy-icon" onclick="copySignature()">Sao chép</button>
-            <span id="copyStatus"></span>
-        </h3>
-        <div id="result" contenteditable="true"></div>
-    </div>
+        <div id="resultSection" style="display:none;">
+            <h3>
+                Chữ ký đã được tạo thành công <button class="copy-icon" style="width: 15%;"
+                    onclick="copySignature()">Sao chép</button>
+                <span id="copyStatus"></span>
+            </h3>
+            <div id="result" contenteditable="true"></div>
+        </div>
 
-    <script src="staffList.js"></script>
+        <script src="staffList.js"></script>
 
-    <script>
-        // Populate selectbox khi load trang
-        window.onload = function () {
-            const select = document.getElementById('staffSelect');
-            staffList.forEach((staff, index) => {
-                const option = document.createElement('option');
-                option.value = index;
-                option.textContent = staff.name;
-                select.appendChild(option);
-            });
-        };
+        <script>
+            // Populate selectbox khi load trang
+            window.onload = function () {
+                const select = document.getElementById('staffSelect');
+                staffList.forEach((staff, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = staff.name;
+                    select.appendChild(option);
+                });
+            };
 
-        function autofill() {
-            const index = +document.getElementById('staffSelect').value;
-            if (isNaN(index)) return;
+            function autofill() {
+                const index = +document.getElementById('staffSelect').value;
+                if (isNaN(index)) return;
 
-            const staff = staffList[index];
-            document.getElementById('name').value = staff.name ?? "";
-            document.getElementById('title').value = staff.title ?? "";
-            document.getElementById('phone').value = staff.phone ?? "";
-            document.getElementById('email').value = staff.email ?? "";
-            document.getElementById('website').value = staff.website ?? "";
+                const staff = staffList[index];
+                document.getElementById('name').value = staff.name ?? "";
+                document.getElementById('title').value = staff.title ?? "";
+                document.getElementById('phone').value = staff.phone ?? "";
+                document.getElementById('email').value = staff.email ?? "";
+                document.getElementById('website').value = staff.website ?? "";
 
-            //reset form ký
-            document.getElementById('resultSection').style.display = 'none';
-            document.getElementById('result').innerHTML = '';
-            document.getElementById('copyStatus').innerText = '';
-        }
-
-
-
-        function generate() {
-            const name = document.getElementById('name').value;
-            const title = document.getElementById('title').value;
-            const phone = document.getElementById('phone').value;
-            const email = document.getElementById('email').value;
-            const websiteRaw = document.getElementById('website').value;
-
-            const websiteList = websiteRaw.split(',').map(link => link.trim()).filter(link => link.length > 0);
-
-            // Tạo HTML <a> tag
-            const websiteHTML = websiteList.map(link => {
-                const safeLink = link.startsWith('http://') || link.startsWith('https://') ? link : 'https://' + link;
-                return `<a href="${safeLink}" target="_blank" style="color:#1a73e8; text-decoration:none;">${safeLink}</a>`;
-            }).join('<span style="margin: 0 4px;">/</span>');
+                //reset form ký
+                document.getElementById('resultSection').style.display = 'none';
+                document.getElementById('result').innerHTML = '';
+                document.getElementById('copyStatus').innerText = '';
+            }
 
 
 
-            const html = `
+            function generate() {
+                const name = document.getElementById('name').value;
+                const title = document.getElementById('title').value;
+                const phone = document.getElementById('phone').value;
+                const email = document.getElementById('email').value;
+                const websiteRaw = document.getElementById('website').value;
+
+                const websiteList = websiteRaw.split(',').map(link => link.trim()).filter(link => link.length > 0);
+
+                // Tạo HTML <a> tag
+                const websiteHTML = websiteList.map(link => {
+                    const safeLink = link.startsWith('http://') || link.startsWith('https://') ? link : 'https://' + link;
+                    return `<a href="${safeLink}" target="_blank" style="color:#1a73e8; text-decoration:none;">${safeLink}</a>`;
+                }).join('<span style="margin: 0 4px;">/</span>');
+
+
+
+                const html = `
 <table cellpadding="0" cellspacing="0" border="0"
     style="width:100%; max-width:600px; font-family:Arial, sans-serif; font-size:14px; color:#333; border-collapse:collapse;">
   <tr>
@@ -195,37 +201,37 @@
   </tr>
 </table>`;
 
-            document.getElementById('result').innerHTML = html;
-            document.getElementById('resultSection').style.display = 'block';
-            document.getElementById('copyStatus').innerText = '';
-        }
-
-        function copySignature() {
-            const resultDiv = document.getElementById("result");
-
-            // Tạo range để chọn HTML đã render
-            const range = document.createRange();
-            range.selectNodeContents(resultDiv);
-
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-
-            try {
-                const successful = document.execCommand("copy");
-                if (successful) {
-                    document.getElementById("copyStatus").innerText = "Đã sao chép!";
-                } else {
-                    document.getElementById("copyStatus").innerText = "Không thể sao chép.";
-                }
-            } catch (err) {
-                document.getElementById("copyStatus").innerText = "Lỗi sao chép.";
+                document.getElementById('result').innerHTML = html;
+                document.getElementById('resultSection').style.display = 'block';
+                document.getElementById('copyStatus').innerText = '';
             }
 
-            selection.removeAllRanges();
-        }
-    </script>
+            function copySignature() {
+                const resultDiv = document.getElementById("result");
 
+                // Tạo range để chọn HTML đã render
+                const range = document.createRange();
+                range.selectNodeContents(resultDiv);
+
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+
+                try {
+                    const successful = document.execCommand("copy");
+                    if (successful) {
+                        document.getElementById("copyStatus").innerText = "Đã sao chép!";
+                    } else {
+                        document.getElementById("copyStatus").innerText = "Không thể sao chép.";
+                    }
+                } catch (err) {
+                    document.getElementById("copyStatus").innerText = "Lỗi sao chép.";
+                }
+
+                selection.removeAllRanges();
+            }
+        </script>
+    </div>
 </body>
 
 </html>
