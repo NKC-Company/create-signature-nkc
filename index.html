@@ -25,6 +25,10 @@
             margin: auto;
             padding: 0 10px;
             display: block;
+
+            .style-label {
+                margin-top: 14px;
+            }
         }
 
         h2 {
@@ -37,7 +41,6 @@
             width: 100%;
             padding: 10px;
             font-size: 16px;
-            margin-bottom: 14px;
             border-radius: 4px;
             border: 1px solid #ccc;
         }
@@ -90,6 +93,10 @@
             top: 25%;
             box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
+
+        .warning-style {
+            color: red;
+        }
     </style>
 </head>
 
@@ -114,21 +121,31 @@
 
         <!-- Vẫn cần giữ lại để autofill hoạt động -->
         <label>Họ tên</label>
-        <input id="name" type="text" placeholder="Nguyễn Văn A">
+        <input id="name" type="text" placeholder="Nguyễn Văn A" oninput="onChangeName(this.value)" />
+        <div id="warning-name" class="warning-style">lưu ý thông tin Họ tên chưa điền</div>
+        <div style="height: 10px;"></div>
 
-        <label>Chức danh</label>
-        <input id="title" type="text" placeholder="ví dụ: HR, NKCentral Group">
+        <label class="style-label">Chức danh</label>
+        <input id="title" type="text" placeholder="ví dụ: HR, NKCentral Group" oninput="onChangeTitle(this.value)" />
+        <div id="warning-title" class="warning-style">lưu ý thông tin Chức danh chưa điền</div>
 
-        <label>Số điện thoại</label>
-        <input id="phone" type="text" placeholder="0334123456">
+        <div style="height: 10px;"></div>
+        <label class="style-label">Số điện thoại</label>
+        <input id="phone" type="text" placeholder="0334123456" oninput="onChangePhone(this.value)" />
+        <div id="warning-phone" class="warning-style">lưu ý thông tin SĐT chưa điền</div>
 
-        <label>Email công ty</label>
-        <input id="email" type="text" placeholder="ten@nkcmc.com.vn">
+        <div style="height: 10px;"></div>
+        <label class="style-label">Email công ty</label>
+        <input id="email" type="text" placeholder="ten@nkcmc.com.vn" oninput="onChangeEmail(this.value)" />
+        <div id="warning-email" class="warning-style">lưu ý thông tin email chưa điền</div>
 
-        <label>Website</label>
-        <input id="website" type="text" placeholder="https://nkmc.com.vn, https://galaxy365.vn">
+        <div style="height: 10px;"></div>
+        <label class="style-label">Website</label>
+        <input id="website" type="text" placeholder="https://nkmc.com.vn, https://galaxy365.vn"
+            oninput="onChangeWebsite(this.value)" />
+        <div id="warning-website" class="warning-style">lưu ý thông tin website chưa điền</div>
 
-        <button onclick="generate()">Tạo chữ ký</button>
+        <!-- <button onclick="generate()">Tạo chữ ký</button> -->
 
         <div id="resultSection" style="display:none; margin-top: 30px;">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
@@ -160,6 +177,7 @@
             document.getElementById('email').value = payload.email ?? "";
             document.getElementById('website').value = "https://nkmc.com.vn";
 
+            generate();
         }
 
         function parseJwt(token) {
@@ -173,6 +191,7 @@
 
         // Populate selectbox khi load trang
         window.onload = function () {
+            defaultStyleWarning();
             document.querySelector('.container').style.display = 'none';
             const container = document.getElementById("myCustomGoogleBtn");
             const width = Math.min(container.offsetWidth, 350);
@@ -234,26 +253,12 @@
             const websiteRaw = document.getElementById('website').value;
 
             const websiteList = websiteRaw.split(',').map(link => link.trim()).filter(link => link.length > 0);
-
-            // Tạo HTML <a> tag
+            checkValidation(name, title, phone, email, websiteRaw);
             const websiteHTML = websiteList.map(link => {
                 const safeLink = link.startsWith('http://') || link.startsWith('https://') ? link : 'https://' + link;
                 return `<a href="${safeLink}" target="_blank" style="color:#1a73e8; text-decoration:none;">${safeLink}</a>`;
             }).join('<span style="margin: 0 4px;">/</span>');
 
-            // Kiểm tra định dạng email
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (email != "" && !emailRegex.test(email)) {
-                alert("Vui lòng nhập đúng định dạng email.");
-                return;
-            }
-
-            // Kiểm tra số điện thoại (10 chữ số, bắt đầu bằng số 0)
-            const phoneRegex = /^0\d{9}$/;
-            if (phone != "" && !phoneRegex.test(phone)) {
-                alert("Vui lòng nhập đúng định dạng số điện thoại (bắt đầu bằng 0 và đủ 10 chữ số).");
-                return;
-            }
 
             const html = `
 <table cellpadding="0" cellspacing="0" border="0"
@@ -327,6 +332,109 @@
 
             selection.removeAllRanges();
         }
+
+        function defaultStyleWarning(name, title, phone, email, websiteRaw) {
+            document.getElementById('warning-name').style.display = 'none';
+            document.getElementById('warning-title').style.display = 'none';
+            document.getElementById('warning-phone').style.display = 'none';
+            document.getElementById('warning-email').style.display = 'none';
+            document.getElementById('warning-website').style.display = 'none';
+        }
+
+        function checkValidation(name, title, phone, email, websiteRaw) {
+            if (name === "") {
+                document.getElementById('warning-name').style.display = 'block';
+            }
+            if (title === "") {
+                document.getElementById('warning-title').style.display = 'block';
+            }
+            if (phone === "") {
+                document.getElementById('warning-phone').style.display = 'block';
+            }
+            if (email === "") {
+                document.getElementById('warning-email').style.display = 'block';
+            }
+            if (websiteRaw === "") {
+                document.getElementById('warning-website').style.display = 'block';
+            }
+        }
+
+        // ONCHANGE PHONE ==> 
+        function onChangePhone(value) {
+            const phoneValue = value.trim();
+            const warningPhone = document.getElementById('warning-phone');
+            if (phoneValue === "") {
+                warningPhone.style.display = 'block';
+                warningPhone.innerText = "lưu ý thông tin SĐT chưa điền";
+            }
+            warningPhone.style.display = 'none';
+            const phoneRegex = /^0\d{9}$/;
+
+            if (phoneValue !== "" && !phoneRegex.test(phoneValue)) {
+                warningPhone.style.display = 'block';
+                warningPhone.innerText = "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 chữ số và bắt đầu bằng 0.";
+            }
+            generate();
+        }
+
+        // ONCHANGE MAIL ==> 
+
+        function onChangeEmail(value) {
+            const mailValue = value.trim();
+            const warningEmail = document.getElementById('warning-email');
+            if (mailValue === "") {
+                warningEmail.style.display = 'block';
+                warningEmail.innerText = "lưu ý thông tin Email chưa điền";
+            }
+            warningEmail.style.display = 'none';
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (mailValue !== "" && !emailRegex.test(mailValue)) {
+                warningEmail.style.display = 'block';
+                warningEmail.innerText = "Vui lòng nhập đúng định dạng email.";
+            }
+            generate();
+        }
+        // ONCHANGE NAME ==> 
+
+        function onChangeName(value) {
+            const nameValue = value.trim();
+            const warningName = document.getElementById('warning-name');
+            if (nameValue === "") {
+                warningName.style.display = 'block';
+                warningName.innerText = "lưu ý thông tin Họ tên chưa điền";
+            }
+            warningName.style.display = 'none';
+            generate();
+        }
+
+        // ONCHANGE TITLE ==> 
+        function onChangeTitle(value) {
+            const titleValue = value.trim();
+            const warningName = document.getElementById('warning-title');
+            if (titleValue === "") {
+                warningName.style.display = 'block';
+                warningName.innerText = "lưu ý thông tin Chức danh chưa điền";
+            }
+            warningName.style.display = 'none';
+            generate();
+        }
+
+        // ONCHANGE WEBSITE ==> 
+        function onChangeWebsite(value) {
+            const websiteValue = value.trim();
+            const warningName = document.getElementById('warning-website');
+            if (websiteValue === "") {
+                warningName.style.display = 'block';
+                warningName.innerText = "lưu ý thông tin Website chưa điền";
+            }
+            warningName.style.display = 'none';
+            generate();
+        }
+
+
+
+
     </script>
 </body>
 
