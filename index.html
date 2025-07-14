@@ -225,8 +225,8 @@
             let html = "";
             if (email.endsWith("@nkmc.com.vn")) {
                 html = genSignatureNKCentral(name, title, phone, email, websiteHTML);
-            } else if (email.endsWith("@galaxy365.vn")) {
-                html = genSignatureType2(name, title, phone, email, websiteHTML);
+            } else if (email.endsWith("@gmail.com")) {
+                html = genSignatureBlissDigital(name, title, phone, email, websiteHTML);
             } else if (email.endsWith("@nkc-company.com")) {
                 html = genSignatureType3(name, title, phone, email, websiteHTML);
             } else {
@@ -406,6 +406,52 @@
                 </tr>
                 </table>`;
         }
+
+        function genSignatureBlissDigital(name, title, phone, email, websiteHTML) {
+            return `
+                    <table cellpadding="0" cellspacing="0" border="0"
+                        style="width:100%; max-width:600px; font-family:Arial, sans-serif; font-size:14px; color:#333; border-collapse:collapse;">
+                    <tr>
+                        <td align="center" valign="middle" style="padding-right:15px; width:100px;">
+                        <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/BLISS-LOGO_Official.png"
+                            alt="BLISS Logo" style="max-width:100px; height:auto; display:block; pointer-events:none; user-select:none;">
+                        </td>
+                        <td valign="middle" style="border-left:1px solid #fade70; padding-left:15px;">
+                            <div style="font-size:17px; font-weight:bold; color:#646464;">${name}</div>
+                            <div style="font-size:14px; color:#646464; margin-bottom:10px; margin-top:6px; font-weight:bold">${title}</div>
+
+                            <div style="margin-bottom:6px;">
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/phone.png"
+                                    alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
+                                <a href="tel:${phone}" style="color:#1a73e8; text-decoration:none;">${phone}</a>
+                            </div>
+
+                            <div style="margin-bottom:6px;">
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/email.png"
+                                    alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
+                                <a href="mailto:${email}" style="color:#1a73e8; text-decoration:none;">${email}</a>
+                            </div>
+
+
+                            <div style="margin-bottom:6px; display: flex; align-items: center; flex-wrap: wrap;">
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/main/web-icon.png"
+                                    alt="Website" style="height:14px; vertical-align:middle; margin-right:6px; flex-shrink:0;">
+                                <div style="display:inline; word-break: break-all;margin-left:4px">${websiteHTML}</div>
+                            </div>
+
+                            <div>
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/location.png"
+                                    alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
+                                <a href="https://maps.google.com/?q=No. 22, D7 Street, Saigon Pearl Villa Area, Thanh My Tay Ward, Binh Thanh District, Ho Chi Minh City" target="_blank" style="color:#1a73e8; text-decoration:none;">
+                                    No. 22, D7 Street, Saigon Pearl Villa Area, Thanh My Tay Ward, Binh Thanh District, Ho Chi Minh City
+                                </a>
+                            </div>
+
+                        </td>
+                    </tr>
+                    </table>`;
+        }
+
     </script>
 </body>
 
