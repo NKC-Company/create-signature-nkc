@@ -79,29 +79,44 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
+        .container-login {
+            width: 40%;
+            border: 1px solid #ffff;
+            padding: 20px;
+            position: absolute;
+            left: 30%;
+            right: 30%;
+            top: 25%;
+            box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
 <body>
-    <div id="loginSection" style="text-align: center; margin-top: 50px;">
-        <h2>Đăng nhập để sử dụng công cụ</h2>
-        <div id="g_id_onload" data-client_id="797607525616-pq9nmbprj0tegjpl4mqs07p8tedqmp31.apps.googleusercontent.com"
-            data-callback="handleCredentialResponse" data-auto_prompt="false">
-        </div>
-        <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
-            data-shape="rectangular" data-logo_alignment="left">
+    <div class="container-login">
+        <div id="loginSection" style="text-align: center;">
+            <h2>Đăng nhập với google</h2>
+            <div id="g_id_onload"
+                data-client_id="797607525616-pq9nmbprj0tegjpl4mqs07p8tedqmp31.apps.googleusercontent.com"
+                data-callback="handleCredentialResponse" data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
+                data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left">
+            </div>
         </div>
     </div>
+
 
     <div class="container">
         <div style="text-align: center;">
             <h2>Tạo chữ ký email cho NKCentral</h2>
         </div>
 
-        <label>Chọn nhân sự</label>
+        <!-- <label>Chọn nhân sự</label>
         <select id="staffSelect" onchange="autofill()"
             style="width:100%; padding:6px; margin-bottom:12px; font-size:14px;">
-        </select>
+        </select> -->
 
         <!-- Vẫn cần giữ lại để autofill hoạt động -->
         <label>Họ tên</label>
@@ -136,13 +151,21 @@
 
     <script>
         function handleCredentialResponse(response) {
-            // response.credential là ID token - bạn có thể gửi lên server để xác minh nếu muốn
+            // response.credential là ID token
             const payload = parseJwt(response.credential);
-            console.log("Đăng nhập thành công:", payload);
+            //console.log("Đăng nhập thành công:", payload);
 
             // Ẩn phần login, hiển thị phần chính
             document.getElementById('loginSection').style.display = 'none';
+            document.querySelector('.container-login').style.display = 'none';
             document.querySelector('.container').style.display = 'block';
+
+            document.getElementById('name').value = payload.given_name ?? "";
+            document.getElementById('title').value = "";
+            document.getElementById('phone').value = "";
+            document.getElementById('email').value = payload.email ?? "";
+            document.getElementById('website').value = "https://nkmc.com.vn";
+
         }
 
         function parseJwt(token) {
@@ -154,12 +177,9 @@
             return JSON.parse(jsonPayload);
         }
 
-        // Ẩn công cụ cho đến khi login thành công
-        window.onload = function () {
-            document.querySelector('.container').style.display = 'none';
-        };
         // Populate selectbox khi load trang
         window.onload = function () {
+            document.querySelector('.container').style.display = 'none';
             const select = document.getElementById('staffSelect');
             staffList.forEach((staff, index) => {
                 const option = document.createElement('option');
@@ -191,8 +211,6 @@
             document.getElementById('result').innerHTML = '';
             document.getElementById('copyStatus').innerText = '';
         }
-
-
 
         function generate() {
             const name = document.getElementById('name').value;
