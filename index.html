@@ -188,9 +188,13 @@
             document.querySelector('.container').style.display = 'none';
             const container = document.getElementById("myCustomGoogleBtn");
             const width = Math.min(container.offsetWidth, 350);
+
+            google.accounts.id.disableAutoSelect();
             google.accounts.id.initialize({
                 client_id: "394229224916-r38l498o87h3s6j4980i4moeq6kng15h.apps.googleusercontent.com",
                 callback: handleCredentialResponse,
+                auto_select: false,
+                prompt_parent_id: "myCustomGoogleBtn"
             });
 
             google.accounts.id.renderButton(
