@@ -111,7 +111,7 @@
 
     <div class="container">
         <div style="text-align: center;">
-            <div style="font-size: 25px;font-weight: bold;margin-bottom: 20px;">Tạo chữ ký email</div>
+            <div style="font-size: 25px;font-weight: bold;margin-bottom: 20px;" id="title-page">Tạo chữ ký email</div>
         </div>
         <!-- Vẫn cần giữ lại để autofill hoạt động -->
         <label>Họ tên</label>
@@ -156,8 +156,20 @@
     <script src="staffList.js"></script>
 
     <script>
+        let userEmail = "";
         function handleCredentialResponse(response) {
             const payload = parseJwt(response.credential);
+            userEmail = payload.email ?? "";
+
+            if (userEmail.endsWith("@nkmc.com.vn")) {
+                document.getElementById('title-page').innerText = "Tạo chữ ký email cho NKC"
+            } else if (userEmail.endsWith("@gmaildd.com")) {
+                document.getElementById('title-page').innerText = "Tạo chữ ký email cho Bliss Digital"
+            } else if (userEmail.endsWith("@gmail.com")) {
+                document.getElementById('title-page').innerText = "Tạo chữ ký email cho PSC Media"
+            } else {
+                document.getElementById('title-page').innerText = "Tạo chữ ký email"
+            }
 
             // Ẩn phần login, hiển thị phần chính
             document.getElementById('loginSection').style.display = 'none';
@@ -223,11 +235,11 @@
 
             // Chọn loại chữ ký theo đuôi email
             let html = "";
-            if (email.endsWith("@nkmc.com.vn")) {
+            if (userEmail.endsWith("@nkmc.com.vn")) {
                 html = genSignatureNKCentral(name, title, phone, email, websiteHTML);
-            } else if (email.endsWith("@gmaildd.com")) {
+            } else if (userEmail.endsWith("@gmaildd.com")) {
                 html = genSignatureBlissDigital(name, title, phone, email, websiteHTML);
-            } else if (email.endsWith("@gmail.com")) {
+            } else if (userEmail.endsWith("@gmail.com")) {
                 html = genSignaturePSCMedia(name, title, phone, email, websiteHTML);
             } else {
                 html = `<div style="color:red;">Email không thuộc các domain được hỗ trợ!</div>`;
