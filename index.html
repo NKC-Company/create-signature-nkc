@@ -96,8 +96,10 @@
 <body>
     <div class="container-login">
         <div id="loginSection" style="text-align: center;">
-            <h2>Đăng nhập với google</h2>
-            <div style="max-width: 400px; margin: auto;">
+            <h2 style="margin-bottom: 10%;">Đăng nhập với google</h2>
+            <div id="myCustomGoogleBtn" style="display: flex;justify-content: center;"></div>
+
+            <!-- <div style="max-width: 400px; margin: auto;">
 
                 <div id="g_id_onload"
                     data-client_id="394229224916-r38l498o87h3s6j4980i4moeq6kng15h.apps.googleusercontent.com"
@@ -106,7 +108,7 @@
                 <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
                     data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left">
                 </div>
-            </div>
+            </div> -->
 
         </div>
     </div>
@@ -184,6 +186,22 @@
         // Populate selectbox khi load trang
         window.onload = function () {
             document.querySelector('.container').style.display = 'none';
+            const container = document.getElementById("myCustomGoogleBtn");
+            const width = Math.min(container.offsetWidth, 350);
+            google.accounts.id.initialize({
+                client_id: "394229224916-r38l498o87h3s6j4980i4moeq6kng15h.apps.googleusercontent.com",
+                callback: handleCredentialResponse,
+            });
+
+            google.accounts.id.renderButton(
+                document.getElementById("myCustomGoogleBtn"),
+                {
+                    theme: "outline",
+                    size: "large",
+                    width: width,
+                }
+            );
+
             const select = document.getElementById('staffSelect');
             staffList.forEach((staff, index) => {
                 const option = document.createElement('option');
