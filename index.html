@@ -24,7 +24,7 @@
             max-width: 700px;
             margin: auto;
             padding: 0 10px;
-            display: none;
+            display: block;
         }
 
         h2 {
@@ -98,18 +98,6 @@
         <div id="loginSection" style="text-align: center;">
             <h2 style="margin-bottom: 10%;">Đăng nhập với google</h2>
             <div id="myCustomGoogleBtn" style="display: flex;justify-content: center;"></div>
-
-            <!-- <div style="max-width: 400px; margin: auto;">
-
-                <div id="g_id_onload"
-                    data-client_id="394229224916-r38l498o87h3s6j4980i4moeq6kng15h.apps.googleusercontent.com"
-                    data-callback="handleCredentialResponse" data-auto_prompt="false">
-                </div>
-                <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
-                    data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left">
-                </div>
-            </div> -->
-
         </div>
     </div>
 
@@ -129,10 +117,10 @@
         <input id="name" type="text" placeholder="Nguyễn Văn A">
 
         <label>Chức danh</label>
-        <input id="title" type="text" placeholder="ví dụ: NKCentral Group">
+        <input id="title" type="text" placeholder="ví dụ: HR, NKCentral Group">
 
         <label>Số điện thoại</label>
-        <input id="phone" type="text" placeholder="0334 123 456">
+        <input id="phone" type="text" placeholder="0334123456">
 
         <label>Email công ty</label>
         <input id="email" type="text" placeholder="ten@nkcmc.com.vn">
@@ -159,14 +147,14 @@
         function handleCredentialResponse(response) {
             // response.credential là ID token
             const payload = parseJwt(response.credential);
-            //console.log("Đăng nhập thành công:", payload);
+            console.log("Đăng nhập thành công:", payload);
 
             // Ẩn phần login, hiển thị phần chính
             document.getElementById('loginSection').style.display = 'none';
             document.querySelector('.container-login').style.display = 'none';
             document.querySelector('.container').style.display = 'block';
 
-            document.getElementById('name').value = payload.given_name ?? "";
+            document.getElementById('name').value = payload.name ?? "";
             document.getElementById('title').value = "";
             document.getElementById('phone').value = "";
             document.getElementById('email').value = payload.email ?? "";
@@ -253,7 +241,19 @@
                 return `<a href="${safeLink}" target="_blank" style="color:#1a73e8; text-decoration:none;">${safeLink}</a>`;
             }).join('<span style="margin: 0 4px;">/</span>');
 
+            // Kiểm tra định dạng email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email != "" && !emailRegex.test(email)) {
+                alert("Vui lòng nhập đúng định dạng email.");
+                return;
+            }
 
+            // Kiểm tra số điện thoại (10 chữ số, bắt đầu bằng số 0)
+            const phoneRegex = /^0\d{9}$/;
+            if (phone != "" && !phoneRegex.test(phone)) {
+                alert("Vui lòng nhập đúng định dạng số điện thoại (bắt đầu bằng 0 và đủ 10 chữ số).");
+                return;
+            }
 
             const html = `
 <table cellpadding="0" cellspacing="0" border="0"
@@ -283,7 +283,7 @@
         <div style="margin-bottom:6px; display: flex; align-items: center; flex-wrap: wrap;">
             <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/main/web-icon.png"
                 alt="Website" style="height:14px; vertical-align:middle; margin-right:6px; flex-shrink:0;">
-            <div style="display:inline; word-break: break-all;margin-left:4px">${websiteHTML}</div>
+            <div style="display:inline; word-break: break-all;margin-left:6px">${websiteHTML}</div>
         </div>
 
         <div>
