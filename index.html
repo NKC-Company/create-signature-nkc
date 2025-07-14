@@ -194,8 +194,6 @@
 
             if (!isAllowed) {
                 alert("Chỉ các email @nkmc.com.vn , @blissdigital.asia, @scnetwork.vn mới được phép truy cập.");
-
-                google.accounts.id.disableAutoSelect();
                 logout();
                 return;
             }
@@ -571,6 +569,7 @@
         }
 
         function logout() {
+            google.accounts.id.disableAutoSelect();
             document.querySelector('.wrap-logout').style.display = 'none';
             localStorage.removeItem("userEmail");
             localStorage.removeItem("name");
