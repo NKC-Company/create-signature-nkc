@@ -162,9 +162,7 @@
 
     <script>
         function handleCredentialResponse(response) {
-            // response.credential là ID token
             const payload = parseJwt(response.credential);
-            console.log("Đăng nhập thành công:", payload);
 
             // Ẩn phần login, hiển thị phần chính
             document.getElementById('loginSection').style.display = 'none';
