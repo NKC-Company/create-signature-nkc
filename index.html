@@ -97,6 +97,26 @@
         .warning-style {
             color: red;
         }
+
+        .container-logout {
+            display: flex;
+            justify-content: end;
+
+            .wrap-logout {
+                width: 10%;
+
+                .logout-style {
+                    background-color: #ffff;
+                    color: #000;
+                    border: 1px solid #ffff;
+                    padding: 8px 12px;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+                }
+            }
+        }
     </style>
 </head>
 
@@ -108,6 +128,11 @@
         </div>
     </div>
 
+    <div class='container-logout' id="logout-id">
+        <div class="wrap-logout">
+            <button class="logout-style" onclick="logout()">Đăng xuất</button>
+        </div>
+    </div>
 
     <div class="container">
         <div style="text-align: center;">
@@ -156,34 +181,62 @@
     <script src="staffList.js"></script>
 
     <script>
-        let userEmail = "";
+        let userEmail = localStorage.getItem("userEmail") || "";
+        let defaultWebsite = localStorage.getItem("websiteDomain") || "";
+
         function handleCredentialResponse(response) {
             const payload = parseJwt(response.credential);
-            userEmail = payload.email ?? "";
+            const allowedDomains = ["@nkmc.com.vn", "@blissdigital.asia", "@scnetwork.vn"];
 
+            userEmail = payload.email ?? "";
+            defaultWebsite = payload.hd ?? "";
+            const isAllowed = allowedDomains.some(domain => userEmail.endsWith(domain));
+
+            if (!isAllowed) {
+                alert("Chỉ các email @nkmc.com.vn , @blissdigital.asia, @scnetwork.vn mới được phép truy cập.");
+
+                google.accounts.id.disableAutoSelect();
+                logout();
+                return;
+            }
+            localStorage.setItem("userEmail", userEmail);
+            localStorage.setItem("name", payload.name);
+            localStorage.setItem("websiteDomain", defaultWebsite);
+
+            showSignatureForm();
+        }
+
+        function showSignatureForm() {
+            document.querySelector('.wrap-logout').style.display = 'block';
+
+            const name = localStorage.getItem("name") || "";
+
+            // Set tiêu đề theo đuôi mail
+            const titlePage = document.getElementById('title-page');
             if (userEmail.endsWith("@nkmc.com.vn")) {
-                document.getElementById('title-page').innerText = "Tạo chữ ký email cho NKC"
+                titlePage.innerText = "Tạo chữ ký email cho NKC";
             } else if (userEmail.endsWith("@blissdigital.asia")) {
-                document.getElementById('title-page').innerText = "Tạo chữ ký email cho Bliss Digital"
+                titlePage.innerText = "Tạo chữ ký email cho Bliss Digital";
             } else if (userEmail.endsWith("@scnetwork.vn")) {
-                document.getElementById('title-page').innerText = "Tạo chữ ký email cho PSC Media"
+                titlePage.innerText = "Tạo chữ ký email cho PSC Media";
             } else {
-                document.getElementById('title-page').innerText = "Tạo chữ ký email"
+                titlePage.innerText = "Tạo chữ ký email";
             }
 
-            // Ẩn phần login, hiển thị phần chính
-            document.getElementById('loginSection').style.display = 'none';
+            // Ẩn login, hiện form chính
             document.querySelector('.container-login').style.display = 'none';
             document.querySelector('.container').style.display = 'block';
 
-            document.getElementById('name').value = payload.name ?? "";
+            // Gán giá trị mặc định
+            document.getElementById('name').value = name;
+            document.getElementById('email').value = userEmail;
             document.getElementById('title').value = "";
             document.getElementById('phone').value = "";
-            document.getElementById('email').value = payload.email ?? "";
-            document.getElementById('website').value = "https://nkmc.com.vn";
+            document.getElementById('website').value = defaultWebsite;
 
             generate();
         }
+
 
         function parseJwt(token) {
             const base64Url = token.split('.')[1];
@@ -198,6 +251,14 @@
         window.onload = function () {
             defaultStyleWarning();
             document.querySelector('.container').style.display = 'none';
+            document.querySelector('.wrap-logout').style.display = 'none';
+
+
+            if (userEmail) {
+                showSignatureForm();
+                return;
+            }
+
             const container = document.getElementById("myCustomGoogleBtn");
             const width = Math.min(container.offsetWidth, 350);
 
@@ -507,6 +568,14 @@
                     </td>
                 </tr>
                 </table>`;
+        }
+
+        function logout() {
+            document.querySelector('.wrap-logout').style.display = 'none';
+            localStorage.removeItem("userEmail");
+            localStorage.removeItem("name");
+            localStorage.removeItem("websiteDomain");
+            location.reload();
         }
 
     </script>
