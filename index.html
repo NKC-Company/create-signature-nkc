@@ -163,9 +163,9 @@
 
             if (userEmail.endsWith("@nkmc.com.vn")) {
                 document.getElementById('title-page').innerText = "Tạo chữ ký email cho NKC"
-            } else if (userEmail.endsWith("@gmaildd.com")) {
+            } else if (userEmail.endsWith("@blissdigital.asia")) {
                 document.getElementById('title-page').innerText = "Tạo chữ ký email cho Bliss Digital"
-            } else if (userEmail.endsWith("@gmail.com")) {
+            } else if (userEmail.endsWith("@scnetwork.vn")) {
                 document.getElementById('title-page').innerText = "Tạo chữ ký email cho PSC Media"
             } else {
                 document.getElementById('title-page').innerText = "Tạo chữ ký email"
@@ -237,9 +237,9 @@
             let html = "";
             if (userEmail.endsWith("@nkmc.com.vn")) {
                 html = genSignatureNKCentral(name, title, phone, email, websiteHTML);
-            } else if (userEmail.endsWith("@gmaildd.com")) {
+            } else if (userEmail.endsWith("@blissdigital.asia")) {
                 html = genSignatureBlissDigital(name, title, phone, email, websiteHTML);
-            } else if (userEmail.endsWith("@gmail.com")) {
+            } else if (userEmail.endsWith("@scnetwork.vn")) {
                 html = genSignaturePSCMedia(name, title, phone, email, websiteHTML);
             } else {
                 html = `<div style="color:red;">Email không thuộc các domain được hỗ trợ!</div>`;
