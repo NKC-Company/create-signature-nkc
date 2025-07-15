@@ -81,6 +81,7 @@
             font-size: 14px;
             border-radius: 4px;
             cursor: pointer;
+            min-width: 100px;
         }
 
         .container-login {
@@ -164,13 +165,23 @@
         <div id="warning-website" class="warning-style">lưu ý thông tin website chưa điền</div>
 
         <div id="resultSection" style="display:none; margin-top: 30px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <div>
                 <h3 style="margin: 0 0 10px 0;">Chữ ký đã được tạo thành công</h3>
-                <div>
-                    <button class="copy-icon" onclick="copySignature()">Sao chép</button>
-                    <button class="copy-icon" onclick="copyRawHTML()">Sao chép HTML thô</button>
-                    <span id="copyStatus" style="margin-left: 8px; font-weight: bold; color: green;"></span>
+                <div style="display: flex;">
+                    <div>
+                        <button class="copy-icon" onclick="copySignature()">Sao chép</button>
+                    </div>
+                    <div style="margin-left: 15px;">
+                        <button class="copy-icon" onclick="copyRawHTML()">Sao chép cho
+                            outlook (classic)</button>
+                    </div>
+                    <div style="margin-left: 15px;">
+                        <button class="copy-icon" onclick="copyRawHTML()">Tải hình
+                            ký</button>
+                    </div>
                 </div>
+                <span id="copyStatus" style="font-weight: bold; color: green;font-size: 13px;"></span>
+
             </div>
             <div id="result" style="margin-top: 12px;">
                 <div id="signatureContent"></div>
@@ -328,10 +339,10 @@
 
             try {
                 document.execCommand("copy");
-                document.getElementById("copyStatus").innerText = "Đã sao chép HTML thô!";
+                document.getElementById("copyStatus").innerText = "Đã sao chép cho outlook classic!";
             } catch (err) {
                 console.error("Không thể sao chép HTML:", err);
-                document.getElementById("copyStatus").innerText = "Không thể sao chép HTML.";
+                document.getElementById("copyStatus").innerText = "Không thể sao chép.";
             }
 
             document.body.removeChild(textArea);
