@@ -58,7 +58,6 @@
             border: 1px solid #ccc;
             overflow-x: auto;
             background-color: #fdfdfd;
-            user-select: none !important;
         }
 
         @media (max-width: 480px) {
@@ -172,6 +171,7 @@
                 <h3 style="margin: 0 0 10px 0;">Chữ ký đã được tạo thành công</h3>
                 <div>
                     <button class="copy-icon" onclick="copySignature()">Sao chép</button>
+                    <button class="copy-icon" onclick="copyRawHTML()">Sao chép HTML thô</button>
                     <span id="copyStatus" style="margin-left: 8px; font-weight: bold; color: green;"></span>
                 </div>
             </div>
@@ -326,6 +326,30 @@
                 console.error("Lỗi sao chép:", err);
                 document.getElementById("copyStatus").innerText = "Không thể sao chép.";
             });
+        }
+
+        function copyRawHTML() {
+            const htmlContent = document.getElementById("signatureContent").innerHTML;
+
+            // Tạo một thẻ <textarea> tạm thời
+            const textArea = document.createElement("textarea");
+            textArea.value = htmlContent;
+            document.body.appendChild(textArea);
+
+            // Chọn và sao chép
+            textArea.select();
+            textArea.setSelectionRange(0, 99999); // for mobile
+
+            try {
+                document.execCommand("copy");
+                document.getElementById("copyStatus").innerText = "Đã sao chép HTML thô!";
+            } catch (err) {
+                console.error("Không thể sao chép HTML:", err);
+                document.getElementById("copyStatus").innerText = "Không thể sao chép HTML.";
+            }
+
+            // Xoá textarea
+            document.body.removeChild(textArea);
         }
 
 
