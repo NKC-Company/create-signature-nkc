@@ -150,7 +150,7 @@
 
         <div style="height: 10px;"></div>
         <label class="style-label">Số điện thoại</label>
-        <input id="phone" type="text" placeholder="0334123456" oninput="onChangePhone(this.value)" />
+        <input id="phone" type="text" placeholder="0334123456" oninput="onChangePhone(this.value)" maxlength="10" />
         <div id="warning-phone" class="warning-style">lưu ý thông tin SĐT chưa điền</div>
 
         <div style="height: 10px;"></div>
@@ -183,6 +183,7 @@
     <script>
         let userEmail = localStorage.getItem("userEmail") || "";
         let defaultWebsite = localStorage.getItem("websiteDomain") || "";
+        let errorEmail = "false";
 
         function handleCredentialResponse(response) {
             const payload = parseJwt(response.credential);
@@ -234,7 +235,6 @@
 
             generate();
         }
-
 
         function parseJwt(token) {
             const base64Url = token.split('.')[1];
@@ -387,6 +387,9 @@
             if (mailValue === "") {
                 warningEmail.style.display = 'block';
                 warningEmail.innerText = "lưu ý thông tin Email chưa điền";
+                errorEmail = "true";
+            } else {
+                errorEmail = "false";
             }
             warningEmail.style.display = 'none';
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -394,6 +397,9 @@
             if (mailValue !== "" && !emailRegex.test(mailValue)) {
                 warningEmail.style.display = 'block';
                 warningEmail.innerText = "Vui lòng nhập đúng định dạng email.";
+                errorEmail = "true";
+            } else {
+                errorEmail = "false";
             }
             generate();
         }
@@ -444,27 +450,27 @@
                         alt="NKC Logo" style="max-width:100px; height:auto; display:block; pointer-events:none; user-select:none;">
                     </td>
                     <td valign="middle" style="border-left:1px solid #fade70; padding-left:15px;">
-                        <div style="font-size:17px; font-weight:bold; color:#646464;">${name}</div>
-                        <div style="font-size:14px; color:#646464; margin-bottom:10px; margin-top:6px; font-weight:bold">${title}</div>
+                        ${name.trim() !== "" ? `<div style="font-size:17px; font-weight:bold; color:#646464;margin-bottom:4px">${name}</div>` : ""}
+                       
+                        ${title.trim() !== "" ? `<div style="font-size:14px; color:#646464; margin-bottom:10px; margin-top:6px; font-weight:bold">${title}</div> ` : ""}
 
-                        <div style="margin-bottom:6px;">
+                        ${(phone.trim() !== "" && phone.length === 10) ? `<div style="margin-bottom:6px;">
                             <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/phone.png"
                                 alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
                             <a href="tel:${phone}" style="color:#1a73e8; text-decoration:none;">${phone}</a>
-                        </div>
+                        </div>` : ""}
 
-                        <div style="margin-bottom:6px;">
+                        ${(email.trim() !== "" && errorEmail === "false") ? `<div style="margin-bottom:6px;">
                             <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/email.png"
                                 alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
                             <a href="mailto:${email}" style="color:#1a73e8; text-decoration:none;">${email}</a>
-                        </div>
+                        </div>` : ""}
 
-
-                        <div style="margin-bottom:6px; display: flex; align-items: center; flex-wrap: wrap;">
+                        ${websiteHTML.trim() !== "" ? `<div style="margin-bottom:6px; display: flex; align-items: center; flex-wrap: wrap;">
                             <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/main/web-icon.png"
                                 alt="Website" style="height:14px; vertical-align:middle; margin-right:6px; flex-shrink:0;">
                             <div style="display:inline; word-break: break-all;margin-left:6px">${websiteHTML}</div>
-                        </div>
+                        </div>` : ""}
 
                         <div>
                             <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/location.png"
@@ -489,27 +495,27 @@
                             alt="BLISS Logo" style="max-width:100px; height:auto; display:block; pointer-events:none; user-select:none;">
                         </td>
                         <td valign="middle" style="border-left:1px solid #fade70; padding-left:15px;">
-                            <div style="font-size:17px; font-weight:bold; color:#646464;">${name}</div>
-                            <div style="font-size:14px; color:#646464; margin-bottom:10px; margin-top:6px; font-weight:bold">${title}</div>
+                            ${name.trim() !== "" ? `<div style="font-size:17px; font-weight:bold; color:#646464;margin-bottom:4px">${name}</div>` : ""}
+                        
+                            ${title.trim() !== "" ? `<div style="font-size:14px; color:#646464; margin-bottom:10px; margin-top:6px; font-weight:bold">${title}</div> ` : ""}
 
-                            <div style="margin-bottom:6px;">
+                            ${(phone.trim() !== "" && phone.length === 10) ? `<div style="margin-bottom:6px;">
                                 <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/phone.png"
                                     alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
                                 <a href="tel:${phone}" style="color:#1a73e8; text-decoration:none;">${phone}</a>
-                            </div>
+                            </div>` : ""}
 
-                            <div style="margin-bottom:6px;">
+                            ${(email.trim() !== "" && errorEmail === "false") ? `<div style="margin-bottom:6px;">
                                 <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/email.png"
                                     alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
                                 <a href="mailto:${email}" style="color:#1a73e8; text-decoration:none;">${email}</a>
-                            </div>
+                            </div>` : ""}
 
-
-                            <div style="margin-bottom:6px; display: flex; align-items: center; flex-wrap: wrap;">
+                            ${websiteHTML.trim() !== "" ? `<div style="margin-bottom:6px; display: flex; align-items: center; flex-wrap: wrap;">
                                 <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/main/web-icon.png"
                                     alt="Website" style="height:14px; vertical-align:middle; margin-right:6px; flex-shrink:0;">
-                                <div style="display:inline; word-break: break-all;margin-left:4px">${websiteHTML}</div>
-                            </div>
+                                <div style="display:inline; word-break: break-all;margin-left:6px">${websiteHTML}</div>
+                            </div>` : ""}
 
                             <div>
                                 <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/location.png"
@@ -534,27 +540,27 @@
                         alt="PSC Logo" style="max-width:100px; height:auto; display:block; pointer-events:none; user-select:none;">
                     </td>
                     <td valign="middle" style="border-left:1px solid #3d3d3d; padding-left:15px;">
-                        <div style="font-size:17px; font-weight:bold; color:#646464;">${name}</div>
-                        <div style="font-size:14px; color:#646464; margin-bottom:10px; margin-top:6px; font-weight:bold">${title}</div>
+                        ${name.trim() !== "" ? `<div style="font-size:17px; font-weight:bold; color:#646464;margin-bottom:4px">${name}</div>` : ""}
+                    
+                        ${title.trim() !== "" ? `<div style="font-size:14px; color:#646464; margin-bottom:10px; margin-top:6px; font-weight:bold">${title}</div> ` : ""}
 
-                        <div style="margin-bottom:6px;">
+                        ${(phone.trim() !== "" && phone.length === 10) ? `<div style="margin-bottom:6px;">
                             <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/phone.png"
                                 alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
                             <a href="tel:${phone}" style="color:#1a73e8; text-decoration:none;">${phone}</a>
-                        </div>
+                        </div>` : ""}
 
-                        <div style="margin-bottom:6px;">
+                        ${(email.trim() !== "" && errorEmail === "false") ? `<div style="margin-bottom:6px;">
                             <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/email.png"
                                 alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
                             <a href="mailto:${email}" style="color:#1a73e8; text-decoration:none;">${email}</a>
-                        </div>
+                        </div>` : ""}
 
-
-                        <div style="margin-bottom:6px; display: flex; align-items: center; flex-wrap: wrap;">
+                        ${websiteHTML.trim() !== "" ? `<div style="margin-bottom:6px; display: flex; align-items: center; flex-wrap: wrap;">
                             <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/main/web-icon.png"
                                 alt="Website" style="height:14px; vertical-align:middle; margin-right:6px; flex-shrink:0;">
-                            <div style="display:inline; word-break: break-all;margin-left:4px"> ${websiteHTML}</div>
-                        </div>
+                            <div style="display:inline; word-break: break-all;margin-left:6px">${websiteHTML}</div>
+                        </div>` : ""}
 
                         <div>
                             <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/location.png"
