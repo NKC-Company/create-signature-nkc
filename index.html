@@ -58,6 +58,7 @@
             border: 1px solid #ccc;
             overflow-x: auto;
             background-color: #fdfdfd;
+            user-select: none !important;
         }
 
         @media (max-width: 480px) {
@@ -174,7 +175,9 @@
                     <span id="copyStatus" style="margin-left: 8px; font-weight: bold; color: green;"></span>
                 </div>
             </div>
-            <div id="result" contenteditable="true" style="margin-top: 12px;"></div>
+            <div id="result" style="margin-top: 12px;">
+                <div id="signatureContent"></div>
+            </div>
         </div>
     </div>
 
@@ -305,35 +308,28 @@
                 html = `<div style="color:red;">Email không thuộc các domain được hỗ trợ!</div>`;
             }
 
-            document.getElementById('result').innerHTML = html;
+            document.getElementById('signatureContent').innerHTML = html;
             document.getElementById('resultSection').style.display = 'block';
             document.getElementById('copyStatus').innerText = '';
         }
 
         function copySignature() {
-            const resultDiv = document.getElementById("result");
+            const htmlContent = document.getElementById("signatureContent").innerHTML;
 
-            // Tạo range để chọn HTML đã render
-            const range = document.createRange();
-            range.selectNodeContents(resultDiv);
+            // Tạo blob HTML
+            const blob = new Blob([htmlContent], { type: "text/html" });
+            const data = [new ClipboardItem({ "text/html": blob })];
 
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-
-            try {
-                const successful = document.execCommand("copy");
-                if (successful) {
-                    document.getElementById("copyStatus").innerText = "Đã sao chép!";
-                } else {
-                    document.getElementById("copyStatus").innerText = "Không thể sao chép.";
-                }
-            } catch (err) {
-                document.getElementById("copyStatus").innerText = "Lỗi sao chép.";
-            }
-
-            selection.removeAllRanges();
+            navigator.clipboard.write(data).then(() => {
+                document.getElementById("copyStatus").innerText = "Đã sao chép!";
+            }).catch(err => {
+                console.error("Lỗi sao chép:", err);
+                document.getElementById("copyStatus").innerText = "Không thể sao chép.";
+            });
         }
+
+
+
 
         function defaultStyleWarning(name, title, phone, email, websiteRaw) {
             document.getElementById('warning-name').style.display = 'none';
