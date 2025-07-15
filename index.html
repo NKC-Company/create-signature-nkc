@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
     <meta charset="UTF-8">
     <title>Signature Generator</title>
@@ -176,7 +177,7 @@
                             outlook (classic)</button>
                     </div>
                     <div style="margin-left: 15px;">
-                        <button class="copy-icon" onclick="copyRawHTML()">Tải hình
+                        <button class="copy-icon" onclick="downloadSignatureImage()">Tải hình
                             ký</button>
                     </div>
                 </div>
@@ -347,6 +348,25 @@
 
             document.body.removeChild(textArea);
         }
+
+        function downloadSignatureImage() {
+            const signatureElement = document.getElementById("signatureContent");
+
+            html2canvas(signatureElement, {
+                backgroundColor: null,
+                scale: 2,
+                useCORS: true
+            }).then(canvas => {
+                const link = document.createElement("a");
+                link.download = "signature.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            }).catch(error => {
+                console.error("Lỗi khi tạo ảnh:", error);
+                alert("Không thể tải ảnh chữ ký. Vui lòng thử lại.");
+            });
+        }
+
 
         function defaultStyleWarning() {
             document.getElementById('warning-name').style.display = 'none';
