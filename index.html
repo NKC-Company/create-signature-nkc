@@ -340,7 +340,8 @@
 
             try {
                 document.execCommand("copy");
-                document.getElementById("copyStatus").innerText = "Đã sao chép! truy cập C:\Users\${tennguoidung}\AppData\Roaming\Microsoft\Signatures để thêm chữ ký";
+                document.getElementById("copyStatus").innerText =
+                    "Đã sao chép! Truy cập C:\\Users\\${tennguoidung}\\AppData\\Roaming\\Microsoft\\Signatures để thêm chữ ký";
             } catch (err) {
                 console.error("Không thể sao chép HTML:", err);
                 document.getElementById("copyStatus").innerText = "Không thể sao chép.";
