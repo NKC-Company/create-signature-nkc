@@ -283,7 +283,7 @@
             checkValidation(name, title, phone, email, websiteRaw);
             const websiteHTML = websiteList.map(link => {
                 const safeLink = link.startsWith('http://') || link.startsWith('https://') ? link : 'https://' + link;
-                return `<a href="${safeLink}" target="_blank" style="color:#1a73e8; text-decoration:none; font-size: 14px;">${safeLink}</a>`;
+                return `<a href="${safeLink}" target="_blank" style="color:#1a73e8; text-decoration:none; font-size: 14px;">&nbsp${safeLink}&nbsp</a>`;
             }).join('<span style="color: #555555; margin: 0 6px;">/</span>');
 
             let html = "";
@@ -448,21 +448,21 @@
                             ${title.trim() !== "" ? `<div style="font-size: 14px; color: #555555; font-weight: bold; margin-bottom: 12px;">${title}</div>` : ""}
                             ${(phone.trim() !== "" && phone.length === 10) ? `
                             <div style="margin-bottom: 8px; font-size: 14px;">
-                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/phone.png" alt="Phone" width="16" height="16" style="vertical-align: middle; margin-right: 8px; border: 0;">
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/phone.png" alt="Phone" width="16" height="16" style="vertical-align: middle; border: 0;">
                                 &nbsp<a href="tel:${phone}" style="color: #1a73e8; text-decoration: none; font-size: 14px;">${phone}</a>
                             </div>` : ""}
                             ${(email.trim() !== "" && errorEmail === "false") ? `
                             <div style="margin-bottom: 8px; font-size: 14px;">
-                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/email.png" alt="Email" width="16" height="16" style="vertical-align: middle; margin-right: 8px; border: 0;">
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/email.png" alt="Email" width="16" height="16" style="vertical-align: middle; border: 0;">
                                 &nbsp<a href="mailto:${email}" style="color: #1a73e8; text-decoration: none; font-size: 14px;">${email}</a>
                             </div>` : ""}
                             ${websiteHTML.trim() !== "" ? `
                             <div style="margin-bottom: 8px; font-size: 14px;">
-                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/main/web-icon.png" alt="Website" width="16" height="16" style="vertical-align: middle; margin-right: 8px; border: 0;">
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/main/web-icon.png" alt="Website" width="16" height="16" style="vertical-align: middle; border: 0;">
                                 &nbsp${websiteHTML}
                             </div>` : ""}
                             <div style="font-size: 14px;">
-                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/location.png" alt="Location" width="16" height="16" style="vertical-align: middle; margin-right: 8px; border: 0;">
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/location.png" alt="Location" width="16" height="16" style="vertical-align: middle; border: 0;">
                                 &nbsp<a href="https://maps.google.com/?q=No. 22, D7 Street, Saigon Pearl Villa Area, Thanh My Tay Ward, Binh Thanh District, Ho Chi Minh City" target="_blank" style="color: #1a73e8; text-decoration: none; font-size: 14px;">
                                     No. 22, D7 Street, Saigon Pearl Villa Area, Thanh My Tay Ward, Binh Thanh District, Ho Chi Minh City
                                 </a>
@@ -474,38 +474,32 @@
 
         function genSignatureBlissDigital(name, title, phone, email, websiteHTML) {
             return `
-                <table cellpadding="0" cellspacing="0" border="0"
-                    style="width:100%; max-width:600px; font-family:Arial, sans-serif; font-size:14px; color:#333; border-collapse:collapse;">
+                <table cellpadding="0" cellspacing="0" style="font-family: Arial, Helvetica, sans-serif; color: #333333; border-collapse: collapse; width: 100%; max-width: 600px;">
                     <tr>
-                        <td align="center" valign="middle" style="padding-right:15px; width:100px;">
-                            <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/BLISS-LOGO_Official.png"
-                                alt="BLISS Logo" style="max-width:100px; height:auto; display:block; pointer-events:none; user-select:none;">
+                        <td align="center" valign="middle" style="padding: 10px 15px 10px 0; width: 100px;">
+                            <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/BLISS-LOGO_Official.png" alt="BLISS Logo" width="100" height="50" style="display: block; border: 0; pointer-events: none; user-select: none;">
                         </td>
-                        <td valign="middle" style="border-left:1px solid #fade70; padding-left:15px;">
-                            ${name.trim() !== "" ? `<div style="font-size:17px; font-weight:bold; color:#646464;margin-bottom:4px">${name}</div>` : ""}
-                            ${title.trim() !== "" ? `<div style="font-size:14px; color:#646464; margin-bottom:10px; margin-top:6px; font-weight:bold">${title}</div>` : ""}
+                        <td valign="top" style="border-left: 2px solid #fade70; padding: 10px 0 10px 15px;">
+                            ${name.trim() !== "" ? `<div style="font-size: 18px; font-weight: bold; color: #333333; margin-bottom: 6px;">${name}</div>` : ""}
+                            ${title.trim() !== "" ? `<div style="font-size: 14px; color: #555555; font-weight: bold; margin-bottom: 12px;">${title}</div>` : ""}
                             ${(phone.trim() !== "" && phone.length === 10) ? `
-                            <div style="margin-bottom:6px;">
-                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/phone.png"
-                                    alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
-                                <a href="tel:${phone}" style="color:#1a73e8; text-decoration:none;">${phone}</a>
+                            <div style="margin-bottom: 8px; font-size: 14px;">
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/phone.png" alt="Phone" width="16" height="16" style="vertical-align: middle; border: 0;">
+                                &nbsp<a href="tel:${phone}" style="color: #1a73e8; text-decoration: none; font-size: 14px;">${phone}</a>
                             </div>` : ""}
                             ${(email.trim() !== "" && errorEmail === "false") ? `
-                            <div style="margin-bottom:6px;">
-                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/email.png"
-                                    alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
-                                <a href="mailto:${email}" style="color:#1a73e8; text-decoration:none;">${email}</a>
+                            <div style="margin-bottom: 8px; font-size: 14px;">
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/email.png" alt="Email" width="16" height="16" style="vertical-align: middle; border: 0;">
+                                &nbsp<a href="mailto:${email}" style="color: #1a73e8; text-decoration: none; font-size: 14px;">${email}</a>
                             </div>` : ""}
                             ${websiteHTML.trim() !== "" ? `
-                            <div style="margin-bottom:6px; display: flex; align-items: center; flex-wrap: wrap;">
-                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/main/web-icon.png"
-                                    alt="Website" style="height:14px; vertical-align:middle; margin-right:6px; flex-shrink:0;">
-                                <div style="display:inline; word-break: break-all;margin-left:6px">${websiteHTML}</div>
+                            <div style="margin-bottom: 8px; font-size: 14px;">
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/main/web-icon.png" alt="Website" width="16" height="16" style="vertical-align: middle; border: 0;">
+                                &nbsp${websiteHTML}
                             </div>` : ""}
-                            <div>
-                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/location.png"
-                                    alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
-                                <a href="https://maps.google.com/?q=No. 22, D7 Street, Saigon Pearl Villa Area, Thanh My Tay Ward, Binh Thanh District, Ho Chi Minh City" target="_blank" style="color:#1a73e8; text-decoration:none;">
+                            <div style="font-size: 14px;">
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/location.png" alt="Location" width="16" height="16" style="vertical-align: middle; border: 0;">
+                                &nbsp<a href="https://maps.google.com/?q=No. 22, D7 Street, Saigon Pearl Villa Area, Thanh My Tay Ward, Binh Thanh District, Ho Chi Minh City" target="_blank" style="color: #1a73e8; text-decoration: none; font-size: 14px;">
                                     No. 22, D7 Street, Saigon Pearl Villa Area, Thanh My Tay Ward, Binh Thanh District, Ho Chi Minh City
                                 </a>
                             </div>
@@ -516,38 +510,32 @@
 
         function genSignaturePSCMedia(name, title, phone, email, websiteHTML) {
             return `
-                <table cellpadding="0" cellspacing="0" border="0"
-                    style="width:100%; max-width:600px; font-family:Arial, sans-serif; font-size:14px; color:#333; border-collapse:collapse;">
+                <table cellpadding="0" cellspacing="0" style="font-family: Arial, Helvetica, sans-serif; color: #333333; border-collapse: collapse; width: 100%; max-width: 600px;">
                     <tr>
-                        <td align="center" valign="middle" style="padding-right:15px; width:100px;">
-                            <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/psc-media.png"
-                                alt="PSC Logo" style="max-width:100px; height:auto; display:block; pointer-events:none; user-select:none;">
+                        <td align="center" valign="middle" style="padding: 10px 15px 10px 0; width: 100px;">
+                            <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/psc-media.png" alt="PSC Logo" width="100" height="50" style="display: block; border: 0; pointer-events: none; user-select: none;">
                         </td>
-                        <td valign="middle" style="border-left:1px solid #3d3d3d; padding-left:15px;">
-                            ${name.trim() !== "" ? `<div style="font-size:17px; font-weight:bold; color:#646464;margin-bottom:4px">${name}</div>` : ""}
-                            ${title.trim() !== "" ? `<div style="font-size:14px; color:#646464; margin-bottom:10px; margin-top:6px; font-weight:bold">${title}</div>` : ""}
+                        <td valign="top" style="border-left: 2px solid #3d3d3d; padding: 10px 0 10px 15px;">
+                            ${name.trim() !== "" ? `<div style="font-size: 18px; font-weight: bold; color: #333333; margin-bottom: 6px;">${name}</div>` : ""}
+                            ${title.trim() !== "" ? `<div style="font-size: 14px; color: #555555; font-weight: bold; margin-bottom: 12px;">${title}</div>` : ""}
                             ${(phone.trim() !== "" && phone.length === 10) ? `
-                            <div style="margin-bottom:6px;">
-                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/phone.png"
-                                    alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
-                                <a href="tel:${phone}" style="color:#1a73e8; text-decoration:none;">${phone}</a>
+                            <div style="margin-bottom: 8px; font-size: 14px;">
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/phone.png" alt="Phone" width="16" height="16" style="vertical-align: middle; border: 0;">
+                                &nbsp<a href="tel:${phone}" style="color: #1a73e8; text-decoration: none; font-size: 14px;">${phone}</a>
                             </div>` : ""}
                             ${(email.trim() !== "" && errorEmail === "false") ? `
-                            <div style="margin-bottom:6px;">
-                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/email.png"
-                                    alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
-                                <a href="mailto:${email}" style="color:#1a73e8; text-decoration:none;">${email}</a>
+                            <div style="margin-bottom: 8px; font-size: 14px;">
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/email.png" alt="Email" width="16" height="16" style="vertical-align: middle; border: 0;">
+                                &nbsp<a href="mailto:${email}" style="color: #1a73e8; text-decoration: none; font-size: 14px;">${email}</a>
                             </div>` : ""}
                             ${websiteHTML.trim() !== "" ? `
-                            <div style="margin-bottom:6px; display: flex; align-items: center; flex-wrap: wrap;">
-                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/main/web-icon.png"
-                                    alt="Website" style="height:14px; vertical-align:middle; margin-right:6px; flex-shrink:0;">
-                                <div style="display:inline; word-break: break-all;margin-left:6px">${websiteHTML}</div>
+                            <div style="margin-bottom: 8px; font-size: 14px;">
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/main/web-icon.png" alt="Website" width="16" height="16" style="vertical-align: middle; border: 0;">
+                                &nbsp${websiteHTML}
                             </div>` : ""}
-                            <div>
-                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/location.png"
-                                    alt="Phone" style="height:14px; vertical-align:middle; margin-right:6px;">
-                                <a href="https://maps.google.com/?q=No. 22, D7 Street, Saigon Pearl Villa Area, Thanh My Tay Ward, Binh Thanh District, Ho Chi Minh City" target="_blank" style="color:#1a73e8; text-decoration:none;">
+                            <div style="font-size: 14px;">
+                                <img src="https://raw.githubusercontent.com/NKC-Company/logo-nkc-asset/refs/heads/main/location.png" alt="Location" width="16" height="16" style="vertical-align: middle; border: 0;">
+                                &nbsp<a href="https://maps.google.com/?q=No. 22, D7 Street, Saigon Pearl Villa Area, Thanh My Tay Ward, Binh Thanh District, Ho Chi Minh City" target="_blank" style="color: #1a73e8; text-decoration: none; font-size: 14px;">
                                     No. 22, D7 Street, Saigon Pearl Villa Area, Thanh My Tay Ward, Binh Thanh District, Ho Chi Minh City
                                 </a>
                             </div>
