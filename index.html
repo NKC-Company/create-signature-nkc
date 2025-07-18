@@ -140,31 +140,33 @@
     <div class="container">
         <div style="text-align: center;">
             <div style="font-size: 25px;font-weight: bold;margin-bottom: 20px;" id="title-page">Tạo chữ ký email</div>
+            <div style="color: red;" id="notify-title">Vui lòng điền đầy đủ thông tin để tạo chữ ký</div>
+
         </div>
         <label>Họ tên</label>
         <input id="name" type="text" placeholder="Nguyễn Văn A" oninput="onChangeName(this.value)" />
-        <div id="warning-name" class="warning-style">lưu ý thông tin Họ tên chưa điền</div>
+        <div id="warning-name" class="warning-style">Vui lòng điền thông tin Họ và tên</div>
         <div style="height: 10px;"></div>
 
         <label class="style-label">Chức danh</label>
         <input id="title" type="text" placeholder="ví dụ: HR, NKCentral Group" oninput="onChangeTitle(this.value)" />
-        <div id="warning-title" class="warning-style">lưu ý thông tin Chức danh chưa điền</div>
+        <div id="warning-title" class="warning-style">Vui lòng điền thông tin Chức danh</div>
 
         <div style="height: 10px;"></div>
         <label class="style-label">Số điện thoại</label>
-        <input id="phone" type="text" placeholder="0334123456" oninput="onChangePhone(this.value)" maxlength="10" />
-        <div id="warning-phone" class="warning-style">lưu ý thông tin SĐT chưa điền</div>
+        <input id="phone" type="text" placeholder="0334123456" oninput="onChangePhone(this)" maxlength="10" />
+        <div id="warning-phone" class="warning-style">Vui lòng điền thông tin SĐT</div>
 
         <div style="height: 10px;"></div>
         <label class="style-label">Email công ty</label>
         <input id="email" type="text" placeholder="ten@nkcmc.com.vn" oninput="onChangeEmail(this.value)" />
-        <div id="warning-email" class="warning-style">lưu ý thông tin email chưa điền</div>
+        <div id="warning-email" class="warning-style">Vui lòng điền thông tin email</div>
 
         <div style="height: 10px;"></div>
         <label class="style-label">Website</label>
         <input id="website" type="text" placeholder="https://nkmc.com.vn, https://galaxy365.vn"
             oninput="onChangeWebsite(this.value)" />
-        <div id="warning-website" class="warning-style">lưu ý thông tin website chưa điền</div>
+        <div id="warning-website" class="warning-style">Vui lòng điền thông tin website</div>
 
         <div id="resultSection" style="display:none; margin-top: 30px;">
             <div>
@@ -198,6 +200,9 @@
         let defaultWebsite = localStorage.getItem("websiteDomain") || "";
         let errorEmail = "false";
         const locationCompany = "No. 22, D7 Street, Saigon Pearl Villa Area, Thanh My Tay Ward, Ho Chi Minh City, Vietnam";
+        let html = "";
+        let errorPhone = "false";
+
 
         function handleCredentialResponse(response) {
             const payload = parseJwt(response.credential);
@@ -292,6 +297,7 @@
             const phone = document.getElementById('phone').value;
             const email = document.getElementById('email').value;
             const websiteRaw = document.getElementById('website').value;
+            const titlePage = document.getElementById('notify-title');
 
             const websiteList = websiteRaw.split(',').map(link => link.trim()).filter(link => link.length > 0);
             checkValidation(name, title, phone, email, websiteRaw);
@@ -300,7 +306,6 @@
                 return `<a href="${safeLink}" target="_blank" style="color:#1a73e8; text-decoration:none; font-size: 14px;">&nbsp${safeLink}&nbsp</a>`;
             }).join('/');
 
-            let html = "";
             if (userEmail.endsWith("@nkmc.com.vn")) {
                 html = genSignatureNKCentral(name, title, phone, email, websiteHTML);
             } else if (userEmail.endsWith("@blissdigital.asia")) {
@@ -310,10 +315,16 @@
             } else {
                 html = `<div style="color:red;">Email không thuộc các domain được hỗ trợ!</div>`;
             }
+            if (name === "" || title === "" || phone === "" || email === "" || websiteRaw === "" || errorEmail === "true" || errorPhone === "true") {
+                document.getElementById('resultSection').style.display = 'none';
+                titlePage.innerText = "Vui lòng điền đầy đủ thông tin để tạo chữ ký"
+            } else {
+                document.getElementById('signatureContent').innerHTML = html;
+                document.getElementById('resultSection').style.display = 'block';
+                document.getElementById('copyStatus').innerText = '';
+                titlePage.innerText = ""
+            }
 
-            document.getElementById('signatureContent').innerHTML = html;
-            document.getElementById('resultSection').style.display = 'block';
-            document.getElementById('copyStatus').innerText = '';
         }
 
         function copySignature() {
@@ -397,21 +408,32 @@
             }
         }
 
-        function onChangePhone(value) {
-            const phoneValue = value.trim();
+        function onChangePhone(input) {
+            // Chỉ cho phép nhập số
+            input.value = input.value.replace(/\D/g, '');
+
+            const phoneValue = input.value.trim();
             const warningPhone = document.getElementById('warning-phone');
-            if (phoneValue === "") {
-                warningPhone.style.display = 'block';
-                warningPhone.innerText = "lưu ý thông tin SĐT chưa điền";
-            }
+
+            // Reset cảnh báo
             warningPhone.style.display = 'none';
+            warningPhone.innerText = "";
+
             const phoneRegex = /^0\d{9}$/;
 
-            if (phoneValue !== "" && !phoneRegex.test(phoneValue)) {
+            if (phoneValue === "") {
+                warningPhone.style.display = 'block';
+                warningPhone.innerText = "Vui lòng điền thông tin SĐT";
+                errorPhone = "true";
+            } else if (!phoneRegex.test(phoneValue)) {
                 warningPhone.style.display = 'block';
                 warningPhone.innerText = "Số điện thoại không hợp lệ. Vui lòng nhập đúng 10 chữ số và bắt đầu bằng 0.";
+                errorPhone = "true";
+            } else {
+                errorPhone = "false";
             }
-            generate();
+
+            generate(); // Gọi lại function bạn đang dùng
         }
 
         function onChangeEmail(value) {
@@ -419,7 +441,7 @@
             const warningEmail = document.getElementById('warning-email');
             if (mailValue === "") {
                 warningEmail.style.display = 'block';
-                warningEmail.innerText = "lưu ý thông tin Email chưa điền";
+                warningEmail.innerText = "Vui lòng điền thông tin Email";
                 errorEmail = "true";
             } else {
                 errorEmail = "false";
@@ -442,7 +464,7 @@
             const warningName = document.getElementById('warning-name');
             if (nameValue === "") {
                 warningName.style.display = 'block';
-                warningName.innerText = "lưu ý thông tin Họ tên chưa điền";
+                warningName.innerText = "Vui lòng điền thông tin Họ tên";
             }
             warningName.style.display = 'none';
             generate();
@@ -453,7 +475,7 @@
             const warningName = document.getElementById('warning-title');
             if (titleValue === "") {
                 warningName.style.display = 'block';
-                warningName.innerText = "lưu ý thông tin Chức danh chưa điền";
+                warningName.innerText = "Vui lòng điền thông tin Chức danh";
             }
             warningName.style.display = 'none';
             generate();
@@ -464,7 +486,7 @@
             const warningName = document.getElementById('warning-website');
             if (websiteValue === "") {
                 warningName.style.display = 'block';
-                warningName.innerText = "lưu ý thông tin Website chưa điền";
+                warningName.innerText = "Vui lòng điền thông tin Website";
             }
             warningName.style.display = 'none';
             generate();
