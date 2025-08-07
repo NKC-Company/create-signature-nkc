@@ -208,14 +208,14 @@
 
         function handleCredentialResponse(response) {
             const payload = parseJwt(response.credential);
-            const allowedDomains = ["@nkmc.com.vn", "@blissdigital.asia", "@scnetwork.vn"];
+            const allowedDomains = ["@nkmc.com.vn", "@blissdigital.asia", "@scnetwork.vn", "@galaxy365.vn"];
 
             userEmail = payload.email ?? "";
             defaultWebsite = payload.hd ?? "";
             const isAllowed = allowedDomains.some(domain => userEmail.endsWith(domain));
 
             if (!isAllowed) {
-                alert("Chỉ các email @nkmc.com.vn , @blissdigital.asia, @scnetwork.vn mới được phép truy cập.");
+                alert("Chỉ các email @nkmc.com.vn , @blissdigital.asia, @scnetwork.vn, @galaxy365.vn mới được phép truy cập.");
                 logout();
                 return;
             }
@@ -233,6 +233,8 @@
 
             const titlePage = document.getElementById('title-page');
             if (userEmail.endsWith("@nkmc.com.vn")) {
+                titlePage.innerText = "Tạo chữ ký email cho NKC";
+            } else if (userEmail.endsWith("@galaxy365.vn")) {
                 titlePage.innerText = "Tạo chữ ký email cho NKC";
             } else if (userEmail.endsWith("@blissdigital.asia")) {
                 titlePage.innerText = "Tạo chữ ký email cho Bliss Digital";
@@ -309,6 +311,8 @@
             }).join('/');
 
             if (userEmail.endsWith("@nkmc.com.vn")) {
+                html = genSignatureNKCentral(name, title, phone, email, websiteHTML);
+            } else if (userEmail.endsWith("@galaxy365.vn")) {
                 html = genSignatureNKCentral(name, title, phone, email, websiteHTML);
             } else if (userEmail.endsWith("@blissdigital.asia")) {
                 html = genSignatureBlissDigital(name, title, phone, email, websiteHTML);
